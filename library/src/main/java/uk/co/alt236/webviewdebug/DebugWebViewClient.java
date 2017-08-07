@@ -30,13 +30,11 @@ public class DebugWebViewClient extends WebViewClient {
                               @NonNull final DebugWebViewClientLogger logger) {
         this.logger = logger;
         this.client = client;
-        //validate();
+        validate();
     }
 
     private void validate() {
-        new Validation().ensureAllMethodsAreOverridden(
-                WebViewClient.class,
-                this.getClass());
+        new Validation().validate(client.getClass(), this.getClass());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
