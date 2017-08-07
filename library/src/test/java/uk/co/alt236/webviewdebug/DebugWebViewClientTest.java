@@ -30,12 +30,14 @@ public class DebugWebViewClientTest {
     private WebView webView;
     private DebugWebViewClient debugClient;
     private WebViewClient wrappedClient;
+    private DebugWebViewClientLogger logger;
 
     @Before
     public void setUp() {
         webView = Mockito.mock(WebView.class);
         wrappedClient = Mockito.mock(WebViewClient.class);
-        debugClient = new DebugWebViewClient(wrappedClient);
+        logger = Mockito.mock(DebugWebViewClientLogger.class);
+        debugClient = new DebugWebViewClient(wrappedClient, logger);
     }
 
     @Test
@@ -45,6 +47,7 @@ public class DebugWebViewClientTest {
         final String url = "bar";
 
         debugClient.onReceivedError(webView, code, message, url);
+        verifyLogger().onReceivedError(webView, code, message, url);
         verifyWrappedClient().onReceivedError(webView, code, message, url);
     }
 
@@ -55,6 +58,7 @@ public class DebugWebViewClientTest {
         final WebResourceError error = Mockito.mock(WebResourceError.class);
 
         debugClient.onReceivedError(webView, request, error);
+        verifyLogger().onReceivedError(webView, request, error);
         verifyWrappedClient().onReceivedError(webView, request, error);
     }
 
@@ -65,6 +69,7 @@ public class DebugWebViewClientTest {
         final WebResourceResponse response = Mockito.mock(WebResourceResponse.class);
 
         debugClient.onReceivedHttpError(webView, request, response);
+        verifyLogger().onReceivedHttpError(webView, request, response);
         verifyWrappedClient().onReceivedHttpError(webView, request, response);
     }
 
@@ -74,6 +79,7 @@ public class DebugWebViewClientTest {
         final SslError sslError = Mockito.mock(SslError.class);
 
         debugClient.onReceivedSslError(webView, errorHandler, sslError);
+        verifyLogger().onReceivedSslError(webView, errorHandler, sslError);
         verifyWrappedClient().onReceivedSslError(webView, errorHandler, sslError);
     }
 
@@ -81,7 +87,8 @@ public class DebugWebViewClientTest {
     public void shouldOverrideUrlLoading() throws Exception {
         final String url = "foo";
 
-        debugClient.shouldOverrideUrlLoading(webView, url);
+        final boolean retVal = debugClient.shouldOverrideUrlLoading(webView, url);
+        verifyLogger().shouldOverrideUrlLoading(webView, url, retVal);
         verifyWrappedClient().shouldOverrideUrlLoading(webView, url);
     }
 
@@ -90,7 +97,8 @@ public class DebugWebViewClientTest {
     public void shouldOverrideUrlLoading1() throws Exception {
         final WebResourceRequest request = Mockito.mock(WebResourceRequest.class);
 
-        debugClient.shouldOverrideUrlLoading(webView, request);
+        final boolean retVal = debugClient.shouldOverrideUrlLoading(webView, request);
+        verifyLogger().shouldOverrideUrlLoading(webView, request, retVal);
         verifyWrappedClient().shouldOverrideUrlLoading(webView, request);
     }
 
@@ -99,6 +107,7 @@ public class DebugWebViewClientTest {
         final String url = "foo";
 
         debugClient.onLoadResource(webView, url);
+        verifyLogger().onLoadResource(webView, url);
         verifyWrappedClient().onLoadResource(webView, url);
     }
 
@@ -108,6 +117,7 @@ public class DebugWebViewClientTest {
         final String url = "foo";
 
         debugClient.onPageCommitVisible(webView, url);
+        verifyLogger().onPageCommitVisible(webView, url);
         verifyWrappedClient().onPageCommitVisible(webView, url);
     }
 
@@ -116,7 +126,8 @@ public class DebugWebViewClientTest {
     public void shouldInterceptRequest() throws Exception {
         final String url = "foo";
 
-        debugClient.shouldInterceptRequest(webView, url);
+        final WebResourceResponse retVal = debugClient.shouldInterceptRequest(webView, url);
+        verifyLogger().shouldInterceptRequest(webView, url, retVal);
         verifyWrappedClient().shouldInterceptRequest(webView, url);
     }
 
@@ -125,7 +136,8 @@ public class DebugWebViewClientTest {
     public void shouldInterceptRequest_api21() throws Exception {
         final WebResourceRequest request = Mockito.mock(WebResourceRequest.class);
 
-        debugClient.shouldInterceptRequest(webView, request);
+        final WebResourceResponse retVal = debugClient.shouldInterceptRequest(webView, request);
+        verifyLogger().shouldInterceptRequest(webView, request, retVal);
         verifyWrappedClient().shouldInterceptRequest(webView, request);
     }
 
@@ -135,6 +147,7 @@ public class DebugWebViewClientTest {
         final Message continueMsg = Mockito.mock(Message.class);
 
         debugClient.onTooManyRedirects(webView, cancelMsg, continueMsg);
+        verifyLogger().onTooManyRedirects(webView, cancelMsg, continueMsg);
         verifyWrappedClient().onTooManyRedirects(webView, cancelMsg, continueMsg);
     }
 
@@ -145,6 +158,7 @@ public class DebugWebViewClientTest {
         final String realm = "bar";
 
         debugClient.onReceivedHttpAuthRequest(webView, handler, host, realm);
+        verifyLogger().onReceivedHttpAuthRequest(webView, handler, host, realm);
         verifyWrappedClient().onReceivedHttpAuthRequest(webView, handler, host, realm);
     }
 
@@ -154,6 +168,7 @@ public class DebugWebViewClientTest {
         final Bitmap bitmap = Mockito.mock(Bitmap.class);
 
         debugClient.onPageStarted(webView, url, bitmap);
+        verifyLogger().onPageStarted(webView, url, bitmap);
         verifyWrappedClient().onPageStarted(webView, url, bitmap);
     }
 
@@ -162,6 +177,7 @@ public class DebugWebViewClientTest {
         final String url = "foo";
 
         debugClient.onPageFinished(webView, url);
+        verifyLogger().onPageFinished(webView, url);
         verifyWrappedClient().onPageFinished(webView, url);
     }
 
@@ -171,6 +187,7 @@ public class DebugWebViewClientTest {
         final ClientCertRequest request = Mockito.mock(ClientCertRequest.class);
 
         debugClient.onReceivedClientCertRequest(webView, request);
+        verifyLogger().onReceivedClientCertRequest(webView, request);
         verifyWrappedClient().onReceivedClientCertRequest(webView, request);
     }
 
@@ -180,6 +197,7 @@ public class DebugWebViewClientTest {
         final Message resend = Mockito.mock(Message.class);
 
         debugClient.onFormResubmission(webView, dontResend, resend);
+        verifyLogger().onFormResubmission(webView, dontResend, resend);
         verifyWrappedClient().onFormResubmission(webView, dontResend, resend);
     }
 
@@ -189,6 +207,7 @@ public class DebugWebViewClientTest {
         final boolean reload = true;
 
         debugClient.doUpdateVisitedHistory(webView, url, reload);
+        verifyLogger().doUpdateVisitedHistory(webView, url, reload);
         verifyWrappedClient().doUpdateVisitedHistory(webView, url, reload);
     }
 
@@ -196,7 +215,8 @@ public class DebugWebViewClientTest {
     public void shouldOverrideKeyEvent() throws Exception {
         final KeyEvent keyEvent = Mockito.mock(KeyEvent.class);
 
-        debugClient.shouldOverrideKeyEvent(webView, keyEvent);
+        final boolean retVal = debugClient.shouldOverrideKeyEvent(webView, keyEvent);
+        verifyLogger().shouldOverrideKeyEvent(webView, keyEvent, retVal);
         verifyWrappedClient().shouldOverrideKeyEvent(webView, keyEvent);
     }
 
@@ -205,6 +225,7 @@ public class DebugWebViewClientTest {
         final KeyEvent keyEvent = Mockito.mock(KeyEvent.class);
 
         debugClient.onUnhandledKeyEvent(webView, keyEvent);
+        verifyLogger().onUnhandledKeyEvent(webView, keyEvent);
         verifyWrappedClient().onUnhandledKeyEvent(webView, keyEvent);
     }
 
@@ -214,6 +235,7 @@ public class DebugWebViewClientTest {
         final float newscale = 2.0f;
 
         debugClient.onScaleChanged(webView, oldscale, newscale);
+        verifyLogger().onScaleChanged(webView, oldscale, newscale);
         verifyWrappedClient().onScaleChanged(webView, oldscale, newscale);
     }
 
@@ -224,6 +246,7 @@ public class DebugWebViewClientTest {
         final String args = "args";
 
         debugClient.onReceivedLoginRequest(webView, realm, account, args);
+        verifyLogger().onReceivedLoginRequest(webView, realm, account, args);
         verifyWrappedClient().onReceivedLoginRequest(webView, realm, account, args);
     }
 
@@ -231,11 +254,17 @@ public class DebugWebViewClientTest {
     @Test
     public void onRenderProcessGone() throws Exception {
         final RenderProcessGoneDetail detail = Mockito.mock(RenderProcessGoneDetail.class);
-        debugClient.onRenderProcessGone(webView, detail);
+
+        final boolean retVal = debugClient.onRenderProcessGone(webView, detail);
+        verifyLogger().onRenderProcessGone(webView, detail, retVal);
         verifyWrappedClient().onRenderProcessGone(webView, detail);
     }
 
     private WebViewClient verifyWrappedClient() {
         return Mockito.verify(wrappedClient, Mockito.times(1));
+    }
+
+    private DebugWebViewClientLogger verifyLogger() {
+        return Mockito.verify(logger, Mockito.times(1));
     }
 }
