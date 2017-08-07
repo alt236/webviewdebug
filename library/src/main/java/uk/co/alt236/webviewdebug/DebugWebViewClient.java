@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
@@ -21,8 +22,13 @@ public class DebugWebViewClient extends WebViewClient {
     private final WebViewClient client;
     private final DebugWebViewClientLogger logger;
 
-    public DebugWebViewClient(final WebViewClient client) {
-        logger = new DebugWebViewClientLogger();
+    public DebugWebViewClient(@NonNull final WebViewClient client) {
+        this(client, new DebugWebViewClientLogger());
+    }
+
+    public DebugWebViewClient(@NonNull final WebViewClient client,
+                              @NonNull final DebugWebViewClientLogger logger) {
+        this.logger = logger;
         this.client = client;
         //validate();
     }

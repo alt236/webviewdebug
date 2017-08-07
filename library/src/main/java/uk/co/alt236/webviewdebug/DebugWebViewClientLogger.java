@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -24,10 +25,19 @@ import java.util.Locale;
     private static final String IN = "---> ";
     private static final String OUT = "<--- ";
     private static final String SPACE = "     ";
-    private static final String TAG = "DEBUGCLIENT";
+    private static final String DEFAULT_TAG = "DEBUGCLIENT";
 
+    private final String tag;
     private boolean loggingEnabled;
     private boolean logKeyEventsEnabled;
+
+    public DebugWebViewClientLogger() {
+        this(DEFAULT_TAG);
+    }
+
+    public DebugWebViewClientLogger(@NonNull final String tag) {
+        this.tag = tag;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onReceivedError(final WebView view, final WebResourceRequest request, final WebResourceError error) {
@@ -195,20 +205,20 @@ import java.util.Locale;
     }
 
     private void log(final String message) {
-        Log.i(TAG, message);
+        Log.i(tag, message);
     }
 
     private void logError(final String message) {
-        Log.e(TAG, message);
+        Log.e(tag, message);
     }
 
     private void logSecurity(final String message) {
-        Log.w(TAG, message);
+        Log.w(tag, message);
     }
 
     private void logKeyEvent(final String message) {
         if (logKeyEventsEnabled) {
-            Log.e(TAG, message);
+            Log.e(tag, message);
         }
     }
 }
