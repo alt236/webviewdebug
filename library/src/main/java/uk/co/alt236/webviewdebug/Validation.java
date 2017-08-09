@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*package*/ final class Validation {
-    private static final String TAG = Validation.class.getSimpleName();
+    private static final String TAG = "WVCLIENT_VALIDATE";
 
     // We need to validate that the DebugClient overrides all methods
     // overridden in the wrapped client.
@@ -33,7 +33,9 @@ import java.util.List;
             }
         }
 
-        if (!unimplementedMethods.isEmpty()) {
+        if (unimplementedMethods.isEmpty()) {
+            Log.d(TAG, "All methods implemented");
+        } else {
             Log.e(TAG, "-----------------------------");
             for (final Method method : unimplementedMethods) {
                 Log.e(TAG, debugClient.getSimpleName() + " does not implement: " + method);

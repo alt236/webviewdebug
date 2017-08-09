@@ -21,7 +21,7 @@ import android.webkit.WebView;
 
 import java.util.Locale;
 
-public class DebugWebViewClientLogger {
+public class DebugWebViewClientLogger implements LogControl {
     private static final Locale LOCALE = Locale.US;
     private static final String IN = "--->";
     private static final String OUT = "<---";
@@ -220,18 +220,22 @@ public class DebugWebViewClientLogger {
         }
     }
 
+    @Override
     public boolean isLoggingEnabled() {
         return loggingEnabled;
     }
 
+    @Override
     public void setLoggingEnabled(final boolean enabled) {
         this.loggingEnabled = enabled;
     }
 
+    @Override
     public boolean isLogKeyEventsEnabled() {
         return logKeyEventsEnabled;
     }
 
+    @Override
     public void setLogKeyEventsEnabled(final boolean enabled) {
         this.logKeyEventsEnabled = enabled;
     }

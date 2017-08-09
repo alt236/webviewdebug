@@ -18,9 +18,13 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class DebugWebViewClient extends WebViewClient {
+public class DebugWebViewClient extends WebViewClient implements LogControl {
     private final WebViewClient client;
     private final DebugWebViewClientLogger logger;
+
+    public DebugWebViewClient() {
+        this(new WebViewClient());
+    }
 
     public DebugWebViewClient(@NonNull final WebViewClient client) {
         this(client, new DebugWebViewClientLogger());
@@ -189,18 +193,22 @@ public class DebugWebViewClient extends WebViewClient {
         return retVal;
     }
 
+    @Override
     public boolean isLoggingEnabled() {
         return logger.isLoggingEnabled();
     }
 
+    @Override
     public void setLoggingEnabled(final boolean enabled) {
         logger.setLoggingEnabled(enabled);
     }
 
+    @Override
     public boolean isLogKeyEventsEnabled() {
         return logger.isLogKeyEventsEnabled();
     }
 
+    @Override
     public void setLogKeyEventsEnabled(final boolean enabled) {
         logger.setLogKeyEventsEnabled(enabled);
     }
