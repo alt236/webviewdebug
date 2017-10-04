@@ -34,7 +34,7 @@ import java.util.List;
         }
 
         if (unimplementedMethods.isEmpty()) {
-            Log.d(TAG, "All methods implemented");
+            Log.d(TAG, "All methods implemented :)");
         } else {
             Log.e(TAG, "-----------------------------");
             for (final Method method : unimplementedMethods) {
