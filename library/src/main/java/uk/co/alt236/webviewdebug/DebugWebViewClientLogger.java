@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.VisibleForTesting;
+import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
 import android.webkit.HttpAuthHandler;
@@ -191,6 +192,12 @@ public class DebugWebViewClientLogger implements LogControl {
         if (loggingEnabled && logKeyEventsEnabled) {
             logger.logKeyEvent(String.format(LOCALE, "%s shouldOverrideKeyEvent() 1/2 EVENT   : %s", SPACE, event));
             logger.logKeyEvent(String.format(LOCALE, "%s shouldOverrideKeyEvent() 2/2 OVERRIDE: %s", SPACE, retVal));
+        }
+    }
+
+    public void onUnhandledInputEvent(final WebView view, final InputEvent event) {
+        if (loggingEnabled && logKeyEventsEnabled) {
+            logger.logKeyEvent(String.format(LOCALE, "%s onUnhandledInputEvent() %s", SPACE, event));
         }
     }
 

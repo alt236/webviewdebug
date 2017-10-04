@@ -5,6 +5,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
+import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
 import android.webkit.HttpAuthHandler;
@@ -303,6 +304,31 @@ public class DebugWebViewClientLoggerTest {
         logger.setLoggingEnabled(true);
         logger.setLogKeyEventsEnabled(true);
         logger.shouldOverrideKeyEvent(webView, keyEvent, false);
+        verifyLogEngine().logKeyEvent(Mockito.anyString());
+    }
+
+    @Test
+    public void onUnhandledInputEvent() throws Exception {
+        final InputEvent inputEvent = Mockito.mock(InputEvent.class);
+
+        logger.setLoggingEnabled(false);
+        logger.setLogKeyEventsEnabled(false);
+        logger.onUnhandledInputEvent(webView, inputEvent);
+        verifyLogNotCalled();
+
+        logger.setLoggingEnabled(false);
+        logger.setLogKeyEventsEnabled(true);
+        logger.onUnhandledInputEvent(webView, inputEvent);
+        verifyLogNotCalled();
+
+        logger.setLoggingEnabled(true);
+        logger.setLogKeyEventsEnabled(false);
+        logger.onUnhandledInputEvent(webView, inputEvent);
+        verifyLogNotCalled();
+
+        logger.setLoggingEnabled(true);
+        logger.setLogKeyEventsEnabled(true);
+        logger.onUnhandledInputEvent(webView, inputEvent);
         verifyLogEngine().logKeyEvent(Mockito.anyString());
     }
 

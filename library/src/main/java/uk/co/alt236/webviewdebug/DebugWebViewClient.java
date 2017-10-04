@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
 import android.webkit.HttpAuthHandler;
@@ -21,6 +22,7 @@ import android.webkit.WebViewClient;
 public class DebugWebViewClient extends WebViewClient implements LogControl {
     private final WebViewClient client;
     private final DebugWebViewClientLogger logger;
+    private final OnUnhandledInputEventMethodProxy onUnhandledInputEventMethodProxy;
 
     public DebugWebViewClient() {
         this(new WebViewClient());
@@ -34,6 +36,7 @@ public class DebugWebViewClient extends WebViewClient implements LogControl {
                               @NonNull final DebugWebViewClientLogger logger) {
         this.logger = logger;
         this.client = client;
+        this.onUnhandledInputEventMethodProxy = new OnUnhandledInputEventMethodProxy(client);
         validate();
     }
 
@@ -165,6 +168,15 @@ public class DebugWebViewClient extends WebViewClient implements LogControl {
         final boolean retVal = client.shouldOverrideKeyEvent(view, event);
         logger.shouldOverrideKeyEvent(view, event, retVal);
         return retVal;
+    }
+
+    //this is a valid, method but it was fully removed from the SDK in API24
+    // it was added in API21.
+    //@Override
+    @SuppressWarnings("unused")
+    public void onUnhandledInputEvent(final WebView view, final InputEvent event) {
+        logger.onUnhandledInputEvent(view, event);
+        onUnhandledInputEventMethodProxy.onUnhandledInputEvent(view, event);
     }
 
     @Override
