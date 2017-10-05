@@ -11,6 +11,21 @@ When a `DebugWebViewClient` is initialised, it will print in log a list of all m
 
 For as long as your app is does not need any of the listed, non-overridden, methods, then there won't be a problem.
 
+## Getting the Library
+
+<b>gradle</b>
+```groovy
+	repositories {
+		maven {
+			url "https://dl.bintray.com/alt236/maven"
+		}
+	}
+
+	dependencies {
+		compile 'uk.co.alt236:webviewdebug:1.0.0'
+	}
+```
+
 ## Usage
 
 Output in logcat uses this tag: `DebugWVClient`.
