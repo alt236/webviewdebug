@@ -19,7 +19,7 @@ Output in logcat uses this tag: `DebugWVClient`.
 ###### 1. Fast way if you already have a WebViewClient
 If you already have a `WebViewClient` implementation, wrap it with `DebugWebViewClient` before assigning it to the WebView.
 
-```
+```java
 final DebugWebViewClient debugWebViewClient = new DebugWebViewClient(new MyCustomWebViewClient());
 debugWebViewClient.setLoggingEnabled(true);
 webView.setWebViewClient(debugWebViewClient);
@@ -33,7 +33,7 @@ Make sure you pass the parameters and any return values of your own `WebViewClie
 ###### 3. You don't have a WebViewClient but you want to know what is going on
 Just instantiate and assign a `DebugWebViewClient`to the WebView.
 
-```
+```java
 final DebugWebViewClient debugWebViewClient = new DebugWebViewClient();
 debugWebViewClient.setLoggingEnabled(true);
 webView.setWebViewClient(debugWebViewClient);
