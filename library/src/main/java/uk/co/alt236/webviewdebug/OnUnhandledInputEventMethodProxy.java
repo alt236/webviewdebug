@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /*package*/ class OnUnhandledInputEventMethodProxy {
-    private static final String TAG = OnUnhandledInputEventMethodProxy.class.getSimpleName();
+    private static final String TAG = BuildConfig.DEFAULT_LOG_TAG;
     private static final String METHOD_NAME = "onUnhandledInputEvent";
     private final WebViewClient client;
     private final Method method;

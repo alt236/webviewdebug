@@ -27,7 +27,7 @@ public class DebugWebViewClientLogger implements LogControl {
     private static final String IN = "--->";
     private static final String OUT = "<---";
     private static final String SPACE = "    ";
-    private static final String DEFAULT_TAG = "DEBUGCLIENT";
+    private static final String DEFAULT_TAG = BuildConfig.DEFAULT_LOG_TAG;
 
     private final LogEngine logger;
     private boolean loggingEnabled;

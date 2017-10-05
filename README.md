@@ -5,11 +5,16 @@ Provides a logging wrapper around a WebViewClient, in order to figure out what i
 This happens by creating a `DebugWebViewClient` which logs events and passes them to an enclosed `WebViewClient`.
 
 ## Warning
-The `DebugWebViewClient` is implementing all `WebViewClient` up to API 26. If your `WebViewClient` is implementing a method that the `DebugWebViewClient` does not, and that method is critical for your business logic, then your app might not work properly.
+The `DebugWebViewClient` is implementing all `WebViewClient` up to API 26. If your `WebViewClient` is implementing a method that the `DebugWebViewClient` does not, and that method is critical for your business logic, then your app will probably not work properly.
 
-When a `DebugWebViewClient` is initialised, it will print in log a list of all methods that are declared in the passed `WebViewClient` class and any parents and are NOT overridden. The tag in LogCat is `WVCLIENT_VALIDATE`. For as long as your app is does not need any of the listed, non-overridden, methods, then there won't be a problem.
+When a `DebugWebViewClient` is initialised, it will print in log a list of all methods that are declared in the passed `WebViewClient` class and any parents and are NOT overridden.
+
+For as long as your app is does not need any of the listed, non-overridden, methods, then there won't be a problem.
 
 ## Usage
+
+Output in logcat uses this tag: `DebugWVClient`.
+
 ### Debugging a WebViewClient
 ###### 1. Fast way if you already have a WebViewClient
 If you already have a `WebViewClient` implementation, wrap it with `DebugWebViewClient` before assigning it to the WebView.
@@ -25,7 +30,7 @@ You can use `DebugWebViewClientLogger` to log things as needed in your own `WebV
 
 Make sure you pass the parameters and any return values of your own `WebViewClient` to the equivalent methods of the `DebugWebViewClientLogger`.
 
-###### 3. You don't have a WebViewClient but wanna know what is going on
+###### 3. You don't have a WebViewClient but you want to know what is going on
 Just instantiate and assign a `DebugWebViewClient`to the WebView.
 
 ```
