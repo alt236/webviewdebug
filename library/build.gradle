@@ -1,5 +1,19 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
 
+final int versionMajor = 1
+final int versionMinor = 0
+final int versionPatch = 0
+
+final String gitHubRepo = 'alt236/webviewdebug'
+final String artifactName = 'webviewdebug'
+final String artifactDesc = 'Provides a custom WebViewClient which will log info each time one of its methods is called'
+final String[] tags = ['webview', 'webviewclient', 'android']
+
+final String artifactGroupId = 'uk.co.alt236'
+final String semanticVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
+final String gitHubUrl = "https://github.com/${gitHubRepo}"
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
@@ -8,7 +22,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0"
+        versionName semanticVersion
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -33,4 +47,82 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile "org.robolectric:robolectric:3.4.2"
     testCompile "org.mockito:mockito-core:2.8.47"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId artifactGroupId
+            artifactId artifactName
+            version semanticVersion
+
+            artifact sourcesJar
+            artifact javadocJar
+
+            // this can go horribly horribly wrong if the directory is not
+            // named after its module
+            String moduleName = ((File) buildDir).getParentFile().getName()
+
+            artifact "$buildDir/outputs/aar/$moduleName-release.aar"
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty('alt236JCenterUser') ? alt236JCenterUser : "<NO USER NAME>"
+    key = project.hasProperty('alt236JCenterToken') ? alt236JCenterToken : "<NO TOKEN>"
+
+    dryRun = false
+    publish = false
+    publications = ['mavenJava']
+    pkg {
+        repo = 'maven'
+        // userOrg = 'myorg' //An optional organization name when the repo belongs to one of the user's orgs
+        name = artifactName
+        desc = artifactDesc
+        websiteUrl = "${gitHubUrl}"
+        issueTrackerUrl = "${gitHubUrl}/issues"
+        vcsUrl = "${gitHubUrl}.git"
+        labels = tags
+        licenses = ['Apache-2.0']
+        publicDownloadNumbers = true
+        githubRepo = "${gitHubRepo}"
+        githubReleaseNotesFile = 'README.md'
+
+        version {
+            name = semanticVersion
+            //desc = 'optional, version-specific description'
+            mavenCentralSync {
+                sync = false
+                // Optional (true by default). Determines whether to sync the version to Maven Central.
+                user = 'userToken' //OSS user token
+                password = 'paasword' //OSS user password
+                close = '1'
+                // Optional property. By default the staging repository is closed and artifacts are released to Maven Central.
+                // You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+            }
+        }
+    }
+
+    if (project.hasProperty("android")) { // Android libraries
+        task sourcesJar(type: Jar) {
+            classifier = 'sources'
+            from android.sourceSets.main.java.srcDirs
+        }
+
+        task javadoc(type: Javadoc) {
+            source = android.sourceSets.main.java.srcDirs
+            classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+        }
+    } else { // Java libraries
+        task sourcesJar(type: Jar, dependsOn: classes) {
+            classifier = 'sources'
+            from sourceSets.main.allSource
+        }
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
 }
