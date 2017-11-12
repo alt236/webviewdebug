@@ -1,4 +1,5 @@
 # WEBVIEW DEBUG
+[![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-webviewdebug-green.svg?style=flat )]( https://android-arsenal.com/details/3/6436 )
 
 Provides a logging wrapper around a WebViewClient, in order to figure out what is going on.
 
