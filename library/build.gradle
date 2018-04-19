@@ -14,13 +14,14 @@ final String[] tags = ['webview', 'webviewclient', 'android']
 final String artifactGroupId = 'uk.co.alt236'
 final String semanticVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
 final String gitHubUrl = "https://github.com/${gitHubRepo}"
+
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName semanticVersion
 
@@ -38,15 +39,15 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    provided 'com.android.support:support-annotations:26.1.0'
-    testCompile 'junit:junit:4.12'
-    testCompile "org.robolectric:robolectric:3.4.2"
-    testCompile "org.mockito:mockito-core:2.8.47"
+    compileOnly 'com.android.support:support-annotations:27.1.1'
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.robolectric:robolectric:3.4.2"
+    testImplementation "org.mockito:mockito-core:2.18.0"
 }
 
 publishing {
