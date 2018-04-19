@@ -17,17 +17,16 @@ import static org.junit.Assert.assertFalse;
 @Config(manifest = Config.NONE, sdk = {17, 18, 19})
 public class OnUnhandledInputEventMethodProxyTestInvalidApi {
 
-    private WebViewClient client;
     private OnUnhandledInputEventMethodProxy proxy;
 
     @Before
-    public void setUp() throws Exception {
-        client = Mockito.mock(WebViewClient.class);
+    public void setUp() {
+        WebViewClient client = Mockito.mock(WebViewClient.class);
         proxy = new OnUnhandledInputEventMethodProxy(client);
     }
 
     @Test
-    public void testOnUnhandledInputEvent() throws Exception {
+    public void testOnUnhandledInputEvent() {
         final WebView webView = Mockito.mock(WebView.class);
         final InputEvent inputEvent = Mockito.mock(InputEvent.class);
 
@@ -36,5 +35,4 @@ public class OnUnhandledInputEventMethodProxyTestInvalidApi {
         assertFalse("Method should not have been present", proxy.isMethodPresent());
         assertFalse("Method call should not have been handled", handled);
     }
-
 }
