@@ -9,7 +9,7 @@ import android.webkit.WebViewClient;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-/*package*/ class OnUnhandledInputEventMethodProxy {
+class OnUnhandledInputEventMethodProxy {
     private static final String TAG = BuildConfig.DEFAULT_LOG_TAG;
     private static final String METHOD_NAME = "onUnhandledInputEvent";
     private final WebViewClient client;
@@ -41,6 +41,8 @@ import java.lang.reflect.Method;
         return method != null;
     }
 
+    @SuppressWarnings({"JavaReflectionMemberAccess", "PrivateApi"})
+    // necessary for debugging- should not be used in production
     private Method getMethod() {
         try {
             return WebViewClient.class.getDeclaredMethod(METHOD_NAME, WebView.class, InputEvent.class);

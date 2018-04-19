@@ -10,14 +10,15 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-/*package*/ final class Validation {
+final class Validation {
     private static final String TAG = BuildConfig.DEFAULT_LOG_TAG;
 
     // We need to validate that the DebugClient overrides all methods
     // overridden in the wrapped client.
 
-    public boolean validate(final Class<? extends WebViewClient> wrappedClient,
-                            final Class<? extends DebugWebViewClient> debugClient) {
+    public boolean validate(
+            final Class<? extends WebViewClient> wrappedClient,
+            final Class<? extends DebugWebViewClient> debugClient) {
 
         final List<Method> unimplementedMethods = new ArrayList<>();
         final Method[] wrappedClientMethods = wrappedClient.getMethods();
@@ -48,26 +49,15 @@ import java.util.List;
 
 
     private static boolean isIgnorable(@NonNull final Method method) {
-        if (Modifier.isPrivate(method.getModifiers())) {
-            return true;
-        } else if (Modifier.isStatic(method.getModifiers())) {
-            return true;
-        } else {
-            return false;
-        }
+        return Modifier.isPrivate(method.getModifiers()) || Modifier.isStatic(method.getModifiers());
     }
 
     @Nullable
-    private static Method getMethod(final Class<?> clazz,
-                                    final Method method) {
-        Method retVal;
-
+    private static Method getMethod(final Class<?> clazz, final Method method) {
         try {
-            retVal = clazz.getDeclaredMethod(method.getName(), method.getParameterTypes());
+            return clazz.getDeclaredMethod(method.getName(), method.getParameterTypes());
         } catch (NoSuchMethodException e) {
-            retVal = null;
+            return null;
         }
-
-        return retVal;
     }
 }
