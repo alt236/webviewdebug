@@ -7,7 +7,7 @@ import android.webkit.WebResourceResponse;
 
 import java.util.Arrays;
 
-/*package*/class StringUtils {
+class StringUtils {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static String toString(final ClientCertRequest request) {

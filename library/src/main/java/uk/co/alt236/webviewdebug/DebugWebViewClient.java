@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
@@ -32,8 +33,9 @@ public class DebugWebViewClient extends WebViewClient implements LogControl {
         this(client, new DebugWebViewClientLogger());
     }
 
-    public DebugWebViewClient(@NonNull final WebViewClient client,
-                              @NonNull final DebugWebViewClientLogger logger) {
+    public DebugWebViewClient(
+            @NonNull final WebViewClient client,
+            @NonNull final DebugWebViewClientLogger logger) {
         this.logger = logger;
         this.client = client;
         this.onUnhandledInputEventMethodProxy = new OnUnhandledInputEventMethodProxy(client);
@@ -41,7 +43,10 @@ public class DebugWebViewClient extends WebViewClient implements LogControl {
     }
 
     private void validate() {
-        new Validation().validate(client.getClass(), this.getClass());
+        if (!new Validation().validate(client.getClass(), this.getClass())) {
+            Log.e(DebugWebViewClient.class.getSimpleName(),
+                    "invalid: the DebugClient does not override all methods overridden in the wrapped client");
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -118,8 +123,9 @@ public class DebugWebViewClient extends WebViewClient implements LogControl {
         return retVal;
     }
 
-    @Deprecated
     @Override
+    @Deprecated
+    @SuppressWarnings("deprecation") //for use with older versions
     public void onTooManyRedirects(WebView view, Message cancelMsg, Message continueMsg) {
         logger.onTooManyRedirects(view, cancelMsg, continueMsg);
         //noinspection deprecation
