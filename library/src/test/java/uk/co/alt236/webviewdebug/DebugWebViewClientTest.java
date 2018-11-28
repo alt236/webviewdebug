@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
 import android.webkit.HttpAuthHandler;
 import android.webkit.RenderProcessGoneDetail;
+import android.webkit.SafeBrowsingResponse;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -23,7 +24,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = Build.VERSION_CODES.O)
+@Config(manifest = Config.NONE, sdk = Build.VERSION_CODES.O_MR1)
 public class DebugWebViewClientTest {
 
     private WebView webView;
@@ -252,6 +253,18 @@ public class DebugWebViewClientTest {
         final boolean retVal = debugClient.onRenderProcessGone(webView, detail);
         verifyLogger().onRenderProcessGone(webView, detail, retVal);
         verifyWrappedClient().onRenderProcessGone(webView, detail);
+    }
+
+    @Test
+    public void onSafeBrowsingHit() {
+        final WebResourceRequest request = Mockito.mock(WebResourceRequest.class);
+        final SafeBrowsingResponse callback = Mockito.mock(SafeBrowsingResponse.class);
+        final int threatType = -1;
+
+        debugClient.onSafeBrowsingHit(webView, request, threatType, callback);
+
+        verifyLogger().onSafeBrowsingHit(webView, request, threatType, callback);
+        verifyWrappedClient().onSafeBrowsingHit(webView, request, threatType, callback);
     }
 
     private WebViewClient verifyWrappedClient() {

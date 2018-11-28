@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
 import android.webkit.HttpAuthHandler;
 import android.webkit.RenderProcessGoneDetail;
+import android.webkit.SafeBrowsingResponse;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -22,6 +23,7 @@ import android.webkit.WebView;
 
 import java.util.Locale;
 
+@SuppressWarnings("WeakerAccess")
 public class DebugWebViewClientLogger implements LogControl {
     private static final Locale LOCALE = Locale.US;
     private static final String IN = "--->";
@@ -224,6 +226,19 @@ public class DebugWebViewClientLogger implements LogControl {
         if (loggingEnabled) {
             logger.log(String.format(LOCALE, "%s onRenderProcessGone() 1/2 DETAIL: %s", SPACE, detail));
             logger.log(String.format(LOCALE, "%s onRenderProcessGone() 2/2 RESULT: %s", SPACE, retVal));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O_MR1)
+    public void onSafeBrowsingHit(final WebView view, final WebResourceRequest request, final int threatType, final SafeBrowsingResponse callback) {
+        if (loggingEnabled) {
+            final Uri url = request.getUrl();
+            final String method = request.getMethod();
+            final String threat = StringUtils.resolveThreatType(threatType);
+
+            logger.log(String.format(LOCALE, "%s onSafeBrowsingHit() 1/3 CALL       : %s %s", SPACE, method, url));
+            logger.log(String.format(LOCALE, "%s onSafeBrowsingHit() 2/3 REQ HEADERS: %s", SPACE, request.getRequestHeaders()));
+            logger.log(String.format(LOCALE, "%s onSafeBrowsingHit() 3/3 THREAT     : %s", SPACE, threat));
         }
     }
 

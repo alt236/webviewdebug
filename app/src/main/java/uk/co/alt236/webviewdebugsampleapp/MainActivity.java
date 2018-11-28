@@ -18,6 +18,6 @@ public class MainActivity extends AppCompatActivity {
         final DebugWebViewClient debugWebViewClient = new DebugWebViewClient(new WebViewClient());
         debugWebViewClient.setLoggingEnabled(true);
         webView.setWebViewClient(debugWebViewClient);
-        webView.loadUrl("http://www.google.com");
+        webView.loadUrl("https://www.google.com");
     }
 }
