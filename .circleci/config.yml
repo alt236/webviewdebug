@@ -1,0 +1,110 @@
+version: 2.1
+
+##
+## REFERENCES
+################################################################
+references:
+
+  #
+  # CONFIGURATION
+  #
+  workspace: &workspace
+    ~/code
+
+  environment_config: &environment_config
+    working_directory: *workspace
+    docker:
+      - image: circleci/android:api-28-alpha
+    environment:
+      JVM_OPTS: -Xmx3200m
+
+  #
+  #
+  # CACHE CONTROL
+  #
+  generate_dependency_hashfile: &generate_dependency_hashfile
+    run:
+      name: Generate Dependency Hashfile
+      command: ./buildsystem/generate_dependency_hashfile.sh ./ ./dependency_hashfile.tmp
+
+  print_dependency_hashfile: &print_dependency_hashfile
+    run:
+      name: Print Dependency Hashfile Contents
+      command: cat ./dependency_hashfile.tmp
+
+  cache_key: &cache_key
+    key: cache-{{ checksum "dependency_hashfile.tmp" }}
+
+  restore_cache: &restore_cache
+    restore_cache:
+      <<: *cache_key
+
+  save_cache: &save_cache
+    save_cache:
+      <<: *cache_key
+      paths:
+        - ~/.gradle
+        - ~/.m2
+
+  #
+  # DOWNLOADING DEPENDENCIES
+  #
+  download_android_dependencies: &download_android_dependencies
+    run:
+      name: Download Dependencies
+      command: ./gradlew dependencies androidDependencies
+
+  #
+  # RUNNING TESTS
+  #
+  run_android_lint: &run_android_lint
+    run:
+      name: Running lint
+      command: ./gradlew lint -PpreDexEnable=false --stacktrace --no-daemon
+
+  run_unit_tests: &run_unit_tests
+    run:
+      name: Running unit tests
+      command: ./gradlew test -PpreDexEnable=false --stacktrace --no-daemon
+
+##
+## COMMANDS
+################################################################
+commands:
+  upload_test_results_and_artifacts:
+    description: "Upload the test reports and artifacts for a given module"
+    parameters:
+      module_name:
+        type: string
+        default: "[MISSING]"
+    steps:
+      - store_artifacts:
+          path: << parameters.module_name >>/build/reports
+          destination: reports-<< parameters.module_name >>
+      - store_test_results:
+          path: << parameters.module_name >>/build/test-results
+
+  setup_dependency_cache:
+      description: "Restore (if present) populate and save (if needed) the dependency cache"
+      steps:
+        - *generate_dependency_hashfile
+        - *print_dependency_hashfile
+        - *restore_cache
+        - *download_android_dependencies
+
+##
+## JOBS
+################################################################
+jobs:
+  build:
+    <<: *environment_config
+    steps:
+      - checkout
+      - setup_dependency_cache
+      - *save_cache
+      - *run_android_lint
+      - *run_unit_tests
+      - upload_test_results_and_artifacts:
+          module_name: "app"
+      - upload_test_results_and_artifacts:
+          module_name: "library"
