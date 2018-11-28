@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
 import android.webkit.HttpAuthHandler;
 import android.webkit.RenderProcessGoneDetail;
+import android.webkit.SafeBrowsingResponse;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -388,6 +389,21 @@ public class DebugWebViewClientLoggerTest {
 
         logger.setLoggingEnabled(true);
         logger.onRenderProcessGone(webView, detail, false);
+        verifyLogEngine().log(Mockito.anyString());
+    }
+
+    @Test
+    public void onSafeBrowsingHit() {
+        final WebResourceRequest request = Mockito.mock(WebResourceRequest.class);
+        final SafeBrowsingResponse callback = Mockito.mock(SafeBrowsingResponse.class);
+        final int threatType = -1;
+
+        logger.setLoggingEnabled(false);
+        logger.onSafeBrowsingHit(webView, request, threatType, callback);
+        verifyLogNotCalled();
+
+        logger.setLoggingEnabled(true);
+        logger.onSafeBrowsingHit(webView, request, threatType, callback);
         verifyLogEngine().log(Mockito.anyString());
     }
 

@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
 import android.webkit.HttpAuthHandler;
 import android.webkit.RenderProcessGoneDetail;
+import android.webkit.SafeBrowsingResponse;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -33,6 +34,7 @@ public class DebugWebViewClient extends WebViewClient implements LogControl {
         this(client, new DebugWebViewClientLogger());
     }
 
+    @SuppressWarnings("WeakerAccess")
     public DebugWebViewClient(
             @NonNull final WebViewClient client,
             @NonNull final DebugWebViewClientLogger logger) {
@@ -209,6 +211,13 @@ public class DebugWebViewClient extends WebViewClient implements LogControl {
         final boolean retVal = client.onRenderProcessGone(view, detail);
         logger.onRenderProcessGone(view, detail, retVal);
         return retVal;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O_MR1)
+    @Override
+    public void onSafeBrowsingHit(final WebView view, final WebResourceRequest request, final int threatType, final SafeBrowsingResponse callback) {
+        logger.onSafeBrowsingHit(view, request, threatType, callback);
+        client.onSafeBrowsingHit(view, request, threatType, callback);
     }
 
     @Override
