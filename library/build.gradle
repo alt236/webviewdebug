@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
+apply from: "${project.rootDir}/buildsystem/dependency-versions.gradle"
 
 final int versionMajor = 1
 final int versionMinor = 0
@@ -17,7 +18,7 @@ final String gitHubUrl = "https://github.com/${gitHubRepo}"
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    buildToolsVersion build_tools_version
 
     defaultConfig {
         minSdkVersion 16
