@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 apply from: "${project.rootDir}/buildsystem/dependency-versions.gradle"
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion compile_sdk_version
     buildToolsVersion build_tools_version
 
     defaultConfig {
         applicationId "uk.co.alt236.webviewdebugsampleapp"
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -25,9 +25,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':library')
 
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation "com.android.support:appcompat-v7:$android_support_lib_version"
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$junit_version"
 
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
