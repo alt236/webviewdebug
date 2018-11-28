@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
+apply from: "${project.rootDir}/buildsystem/dependency-versions.gradle"
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    buildToolsVersion build_tools_version
 
     defaultConfig {
         applicationId "uk.co.alt236.webviewdebugsampleapp"
