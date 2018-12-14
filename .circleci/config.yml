@@ -16,7 +16,7 @@ references:
     docker:
       - image: circleci/android:api-28-alpha
     environment:
-      JVM_OPTS: -Xmx3200m
+      JVM_OPTS: -Xmx3584m
 
   #
   #
@@ -52,7 +52,7 @@ references:
   download_android_dependencies: &download_android_dependencies
     run:
       name: Download Dependencies
-      command: ./gradlew dependencies androidDependencies
+      command: ./gradlew dependencies androidDependencies --no-daemon
 
   #
   # RUNNING TESTS
@@ -66,6 +66,14 @@ references:
     run:
       name: Running unit tests
       command: ./gradlew test -PpreDexEnable=false --stacktrace --no-daemon
+
+  #
+  # BUILDING
+  #
+  build_project: &build_project
+    run:
+      name: Building project
+      command: ./gradlew assemble -PpreDexEnable=false --stacktrace --no-daemon
 
 ##
 ## COMMANDS
@@ -102,6 +110,7 @@ jobs:
       - checkout
       - setup_dependency_cache
       - *save_cache
+      - *build_project
       - *run_android_lint
       - *run_unit_tests
       - upload_test_results_and_artifacts:
