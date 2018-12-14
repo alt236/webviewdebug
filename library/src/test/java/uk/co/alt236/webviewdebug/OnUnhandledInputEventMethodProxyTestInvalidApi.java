@@ -4,6 +4,7 @@ import android.view.InputEvent;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,11 @@ public class OnUnhandledInputEventMethodProxyTestInvalidApi {
     public void setUp() {
         WebViewClient client = Mockito.mock(WebViewClient.class);
         proxy = new OnUnhandledInputEventMethodProxy(client);
+    }
+
+    @After
+    public void tearDown() {
+        proxy = null;
     }
 
     @Test

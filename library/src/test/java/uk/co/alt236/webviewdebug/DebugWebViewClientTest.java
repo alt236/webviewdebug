@@ -2,7 +2,6 @@ package uk.co.alt236.webviewdebug;
 
 import android.graphics.Bitmap;
 import android.net.http.SslError;
-import android.os.Build;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.webkit.ClientCertRequest;
@@ -16,6 +15,7 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +24,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = Build.VERSION_CODES.O_MR1)
+@Config(manifest = Config.NONE, sdk = 27)
 public class DebugWebViewClientTest {
 
     private WebView webView;
@@ -38,6 +38,14 @@ public class DebugWebViewClientTest {
         wrappedClient = Mockito.mock(WebViewClient.class);
         logger = Mockito.mock(DebugWebViewClientLogger.class);
         debugClient = new DebugWebViewClient(wrappedClient, logger);
+    }
+
+    @After
+    public void tearDown() {
+        webView = null;
+        wrappedClient = null;
+        logger = null;
+        debugClient = null;
     }
 
     @Test

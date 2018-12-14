@@ -4,6 +4,7 @@ import android.view.InputEvent;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +15,7 @@ import org.robolectric.annotation.Config;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = {21, 22, 23, 24, 25, 26})
+@Config(manifest = Config.NONE, sdk = {21, 27})
 public class OnUnhandledInputEventMethodProxyTestValidApi {
 
     private OnUnhandledInputEventMethodProxy proxy;
@@ -23,6 +24,11 @@ public class OnUnhandledInputEventMethodProxyTestValidApi {
     public void setUp() {
         WebViewClient client = Mockito.mock(WebViewClient.class);
         proxy = new OnUnhandledInputEventMethodProxy(client);
+    }
+
+    @After
+    public void tearDown() {
+        proxy = null;
     }
 
     @Test

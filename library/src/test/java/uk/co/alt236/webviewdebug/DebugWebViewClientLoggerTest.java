@@ -16,6 +16,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +40,13 @@ public class DebugWebViewClientLoggerTest {
         webView = Mockito.mock(WebView.class);
         logEngine = Mockito.mock(LogEngine.class);
         logger = new DebugWebViewClientLogger(logEngine);
+    }
+
+    @After
+    public void tearDown() {
+        webView = null;
+        logEngine = null;
+        logger = null;
     }
 
     @Test
