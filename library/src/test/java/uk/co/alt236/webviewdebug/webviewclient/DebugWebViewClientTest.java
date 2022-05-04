@@ -1,4 +1,4 @@
-package uk.co.alt236.webviewdebug;
+package uk.co.alt236.webviewdebug.webviewclient;
 
 import android.graphics.Bitmap;
 import android.net.http.SslError;

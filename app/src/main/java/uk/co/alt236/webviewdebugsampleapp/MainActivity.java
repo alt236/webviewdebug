@@ -1,11 +1,11 @@
 package uk.co.alt236.webviewdebugsampleapp;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import uk.co.alt236.webviewdebug.DebugWebViewClient;
+import androidx.appcompat.app.AppCompatActivity;
+import uk.co.alt236.webviewdebug.webviewclient.DebugWebViewClient;
 
 public class MainActivity extends AppCompatActivity {
 

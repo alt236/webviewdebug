@@ -1,12 +1,13 @@
-package uk.co.alt236.webviewdebug;
+package uk.co.alt236.webviewdebug.webviewclient;
 
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.webkit.ClientCertRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebViewClient;
 
 import java.util.Arrays;
+
+import androidx.annotation.RequiresApi;
 
 @SuppressWarnings("WeakerAccess")
 public class StringUtils {

@@ -1,4 +1,4 @@
-package uk.co.alt236.webviewdebug;
+package uk.co.alt236.webviewdebug.webviewclient;
 
 import android.view.InputEvent;
 import android.webkit.WebView;
@@ -12,11 +12,11 @@ import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = {21, 27})
-public class OnUnhandledInputEventMethodProxyTestValidApi {
+@Config(manifest = Config.NONE, sdk = {17, 18, 19})
+public class OnUnhandledInputEventMethodProxyTestInvalidApi {
 
     private OnUnhandledInputEventMethodProxy proxy;
 
@@ -33,12 +33,12 @@ public class OnUnhandledInputEventMethodProxyTestValidApi {
 
     @Test
     public void testOnUnhandledInputEvent() {
-        final WebView webView = Mockito.any(WebView.class);
-        final InputEvent inputEvent = Mockito.any(InputEvent.class);
+        final WebView webView = Mockito.mock(WebView.class);
+        final InputEvent inputEvent = Mockito.mock(InputEvent.class);
 
         final boolean handled = proxy.onUnhandledInputEvent(webView, inputEvent);
 
-        assertTrue("Method should have been present", proxy.isMethodPresent());
-        assertTrue("Method call should have been handled", handled);
+        assertFalse("Method should not have been present", proxy.isMethodPresent());
+        assertFalse("Method call should not have been handled", handled);
     }
 }

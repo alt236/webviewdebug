@@ -1,7 +1,5 @@
-package uk.co.alt236.webviewdebug;
+package uk.co.alt236.webviewdebug.webviewclient;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.webkit.WebViewClient;
 
@@ -9,6 +7,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import uk.co.alt236.webviewdebug.BuildConfig;
 
 final class Validation {
     private static final String TAG = BuildConfig.DEFAULT_LOG_TAG;
