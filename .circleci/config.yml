@@ -14,7 +14,7 @@ references:
   environment_config: &environment_config
     working_directory: *workspace
     docker:
-      - image: circleci/android:api-28-alpha
+      - image: cimg/android:2022.04
     environment:
       JVM_OPTS: -Xmx3584m
 
