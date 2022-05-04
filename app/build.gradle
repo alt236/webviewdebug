@@ -3,7 +3,6 @@ apply from: "${project.rootDir}/buildsystem/dependency-versions.gradle"
 
 android {
     compileSdkVersion compile_sdk_version
-    buildToolsVersion build_tools_version
 
     defaultConfig {
         applicationId "uk.co.alt236.webviewdebugsampleapp"
@@ -11,8 +10,9 @@ android {
         targetSdkVersion target_sdk_version
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -25,11 +25,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':library')
 
-    implementation "com.android.support:appcompat-v7:$android_support_lib_version"
+    implementation "androidx.appcompat:appcompat:$android_x_annotations"
 
     testImplementation "junit:junit:$junit_version"
 
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 }

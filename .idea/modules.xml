@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/webviewdebug.iml" filepath="$PROJECT_DIR$/webviewdebug.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/webviewdebug.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/webviewdebug.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/webviewdebug.library.iml" filepath="$PROJECT_DIR$/.idea/modules/library/webviewdebug.library.iml" />
     </modules>
   </component>
 </project>

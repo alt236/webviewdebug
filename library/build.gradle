@@ -18,16 +18,12 @@ final String gitHubUrl = "https://github.com/${gitHubRepo}"
 
 android {
     compileSdkVersion compile_sdk_version
-    buildToolsVersion build_tools_version
 
     defaultConfig {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
 
-        versionCode 1
-        versionName semanticVersion
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         buildConfigField "String", "DEFAULT_LOG_TAG", "\"DebugWVClient\""
     }
@@ -41,16 +37,16 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    compileOnly "androidx.annotation:annotation:$android_x_annotations"
 
-    compileOnly "com.android.support:support-annotations:$android_support_lib_version"
     testImplementation "junit:junit:$junit_version"
 
-    testImplementation "org.robolectric:robolectric:3.5.1"
-    testImplementation "org.mockito:mockito-core:2.18.0"
+    testImplementation "org.robolectric:robolectric:4.1"
+    testImplementation "org.mockito:mockito-core:3.9.0"
+
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 }
 
 publishing {
@@ -60,8 +56,8 @@ publishing {
             artifactId artifactName
             version semanticVersion
 
-            artifact sourcesJar
-            artifact javadocJar
+//            artifact sourcesJar
+//            artifact javadocJar
 
             // this can go horribly horribly wrong if the directory is not
             // named after its module

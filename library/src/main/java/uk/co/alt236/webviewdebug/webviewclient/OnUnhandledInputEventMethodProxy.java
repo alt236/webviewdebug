@@ -1,6 +1,5 @@
-package uk.co.alt236.webviewdebug;
+package uk.co.alt236.webviewdebug.webviewclient;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.InputEvent;
 import android.webkit.WebView;
@@ -8,6 +7,9 @@ import android.webkit.WebViewClient;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import androidx.annotation.NonNull;
+import uk.co.alt236.webviewdebug.BuildConfig;
 
 class OnUnhandledInputEventMethodProxy {
     private static final String TAG = BuildConfig.DEFAULT_LOG_TAG;
