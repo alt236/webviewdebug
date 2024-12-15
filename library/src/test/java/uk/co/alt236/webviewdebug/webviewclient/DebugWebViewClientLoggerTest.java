@@ -24,6 +24,8 @@ import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import uk.co.alt236.webviewdebug.webviewclient.logger.LogCatLogEngine;
+
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
@@ -32,13 +34,13 @@ import static junit.framework.Assert.assertTrue;
 public class DebugWebViewClientLoggerTest {
 
     private WebView webView;
-    private LogEngine logEngine;
+    private LogCatLogEngine logEngine;
     private DebugWebViewClientLogger logger;
 
     @Before
     public void setUp() {
         webView = Mockito.mock(WebView.class);
-        logEngine = Mockito.mock(LogEngine.class);
+        logEngine = Mockito.mock(LogCatLogEngine.class);
         logger = new DebugWebViewClientLogger(logEngine);
     }
 
@@ -433,7 +435,7 @@ public class DebugWebViewClientLoggerTest {
         Mockito.verify(logEngine, Mockito.never()).logKeyEvent(Mockito.anyString());
     }
 
-    private LogEngine verifyLogEngine() {
+    private LogCatLogEngine verifyLogEngine() {
         return Mockito.verify(logEngine, Mockito.atLeastOnce());
     }
 }

@@ -22,8 +22,9 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.annotation.VisibleForTesting;
 import uk.co.alt236.webviewdebug.BuildConfig;
+import uk.co.alt236.webviewdebug.webviewclient.logger.LogCatLogEngine;
+import uk.co.alt236.webviewdebug.webviewclient.logger.LogEngine;
 
 @SuppressWarnings("WeakerAccess")
 public class DebugWebViewClientLogger implements LogControl {
@@ -42,11 +43,10 @@ public class DebugWebViewClientLogger implements LogControl {
     }
 
     public DebugWebViewClientLogger(@NonNull final String tag) {
-        this(new LogEngine(tag));
+        this(new LogCatLogEngine(tag));
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    protected DebugWebViewClientLogger(@NonNull final LogEngine logEngine) {
+    public DebugWebViewClientLogger(@NonNull final LogEngine logEngine) {
         this.logger = logEngine;
     }
 
